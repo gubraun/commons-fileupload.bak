@@ -36,4 +36,4 @@ jobs:
       uses: blackducksoftware/github-action@2.0.0
       with:
         # Synopsys Detect arguments
-        args: --blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR"
+        args: --blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR" --detect.policy.check.fail.on.severities
