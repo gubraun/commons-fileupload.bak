@@ -33,8 +33,8 @@ jobs:
         echo test, and deploy your project.
     
     - name: Synopsys Detect
-      uses: blackducksoftware/github-action@2.0.0
+      uses: blackducksoftware/github-action@2.0.1
       with:
         # Synopsys Detect arguments!
-        args: --blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR" --detect.policy.check.fail.on.severities=CRITICAL
+        args: --blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR" --detect.policy.check.fail.on.severities=ALL
 
