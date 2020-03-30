@@ -32,22 +32,12 @@ steps:
     coverityService: 'coverity-vm'
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
+    checkIssues: true
+    issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
+    #buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
+    coverityRunType: 'custom'
+    customCoverityCommands: |
+      cov-capture --project-dir $(Build.Repository.LocalPath) --dir $(Build.Repository.LocalPath)/idir
+      cov-analyze --dir $(Build.Repository.LocalPath)/idir
     allowUntrusted: true
-
-#- script: |
-#    $(mntPath)/cov-analysis/bin/cov-analyze --ident
-#    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
-#  displayName: 'Configure Coverity'
-
-#- script: $(mntPath)/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
-#  displayName: 'Compile C source file'
-
-#- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
-#  displayName: 'Run Coverity analysis'
-
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
