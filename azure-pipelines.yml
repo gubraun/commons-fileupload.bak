@@ -27,7 +27,7 @@ steps:
       sh mount-coverity.sh
       df -h
       
-- script: bash ./AzureFileDiagnostics.sh
+- script: bash ./AzureFileDiagnostics.sh -a coveritystore -s cov-analysis-share
   displayName: 'Diagnose file share issues'
  
 #- task: synopsys-coverity@1
