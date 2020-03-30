@@ -27,9 +27,7 @@ steps:
       sh mount-coverity.sh
       df -h
       
-- script: |
-    pwd
-    bash ./s/AzFilesDiagnostics.sh
+- script: bash ./AzureFilesDiagnostics.sh
   displayName: 'Diagnose file share issues'
  
 #- task: synopsys-coverity@1
