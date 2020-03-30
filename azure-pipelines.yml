@@ -26,15 +26,18 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
+      
+- script: bash ./AzFilesDiagnostics.sh
+  displayName: 'Diagnose file share issues'
  
-- task: synopsys-coverity@1
-  inputs:
-    coverityService: 'coverity-vm'
-    projectName: 'Azure Commons Fileupload'
-    streamName: 'az-commons-fileupload'
-    checkIssues: false
-    issueView: 'Outstanding Issues'
-    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
-    coverityRunType: 'buildanalyzecommit'
-    allowUntrusted: true
+#- task: synopsys-coverity@1
+#  inputs:
+#    coverityService: 'coverity-vm'
+#    projectName: 'Azure Commons Fileupload'
+#    streamName: 'az-commons-fileupload'
+#    checkIssues: false
+#    issueView: 'Outstanding Issues'
+#    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+#    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
+#    coverityRunType: 'buildanalyzecommit'
+#    allowUntrusted: true
