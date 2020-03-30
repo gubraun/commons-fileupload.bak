@@ -26,9 +26,10 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
+      mount | grep cifs
       
-- script: bash ./AzureFileDiagnostics.sh -a coveritystore -s cov-analysis-share
-  displayName: 'Diagnose file share issues'
+#- script: bash ./AzureFileDiagnostics.sh -a coveritystore -s cov-analysis-share
+#  displayName: 'Diagnose file share issues'
  
 #- task: synopsys-coverity@1
 #  inputs:
