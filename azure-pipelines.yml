@@ -33,7 +33,7 @@ steps:
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'mvn package'
+    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
     allowUntrusted: true
 
 #- script: |
