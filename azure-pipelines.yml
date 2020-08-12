@@ -65,5 +65,6 @@ steps:
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
     coverityRunType: 'buildanalyzecommit'
+    customCommandArgs: true
+    covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
     allowUntrusted: true
-
