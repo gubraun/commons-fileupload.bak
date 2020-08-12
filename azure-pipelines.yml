@@ -62,6 +62,7 @@ steps:
     streamName: 'az-commons-fileupload'
     checkIssues: false
     issueView: 'Outstanding Issues'
+    issueStatus: 'success'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
     coverityRunType: 'buildanalyzecommit'
