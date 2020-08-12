@@ -50,6 +50,10 @@ steps:
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
+# Configure Coverity for Java
+- script: $(COVERITY_TOOL_HOME)/bin/cov-configure --java
+  displayName: 'Configure Coverity'
+
 # Cache Maven local repo to speed things up
 - task: Cache@2
   inputs:
