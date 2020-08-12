@@ -22,14 +22,13 @@ steps:
 # Pull Coverity analysis tool from cache if available
 - task: Cache@2
   inputs:
-    key: '"v2" | "coverity-analysis-2019.12" | "$(Agent.OS)"'
+    key: '"v3" | "coverity-analysis-2019.12" | "$(Agent.OS)"'
     path: $(COVERITY_TOOL_HOME)
     cacheHitVar: CACHE_RESTORED
   displayName: 'Cache Coverity Tool Installation'
 
 # If Coverity not cached, mount file share with Coverity analysis package...
 - task: AzureCLI@2
-  displayName: Azure CLI
   inputs:
     azureSubscription: azure-connection
     scriptType: bash
@@ -37,8 +36,10 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
+  condition: ne(variables.CACHE_RESTORED, 'true')
+  displayName: Azure CLI
 
-# ... and copy and install Coverity analysis package first.
+# ... copy and install Coverity analysis package ...
 - script: |
     cd $(Agent.BuildDirectory)
     cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
@@ -50,8 +51,10 @@ steps:
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
-# Configure Coverity for Java
-- script: $(COVERITY_TOOL_HOME)/bin/cov-configure --java
+# ... and configure Coverity
+- script: |
+    $(COVERITY_TOOL_HOME)/bin/cov-configure --java
+    $(COVERITY_TOOL_HOME)/bin/cov-configure --gcc
   displayName: 'Configure Coverity'
 
 # Cache Maven local repo to speed things up
