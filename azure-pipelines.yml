@@ -60,7 +60,7 @@ steps:
     coverityService: 'coverity-vm'
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
-    checkIssues: false
+    checkIssues: true
     issueView: 'High Impact Outstanding'
     issueStatus: 'failure'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
