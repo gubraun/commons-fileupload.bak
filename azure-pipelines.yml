@@ -8,7 +8,7 @@ variables:
   storageAccountName: coveritystore
   fileShareName: cov-analysis-share
   mntPath: /mnt/$(storageAccountName)/$(fileShareName)
-  COVERITY_TOOL_HOME: $(mntPath)/cov-analysis
+  COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
@@ -19,6 +19,15 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+# Pull Coverity analysis tool from cache if available
+- task: Cache@2
+  inputs:
+    key: '"v2" | "coverity-analysis-2019.12" | "$(Agent.OS)"'
+    path: $(COVERITY_TOOL_HOME)
+    cacheHitVar: CACHE_RESTORED
+  displayName: 'Cache Coverity Tool Installation'
+
+# If Coverity not cached, mount file share with Coverity analysis package...
 - task: AzureCLI@2
   displayName: Azure CLI
   inputs:
@@ -29,7 +38,19 @@ steps:
       sh mount-coverity.sh
       df -h
 
-steps:
+# ... and copy and install Coverity analysis package first.
+- script: |
+    cd $(Agent.BuildDirectory)
+    cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
+    cp $(mntPath)/cov-analysis-linux64-2019.12/bin/license.dat .
+    tar -xvzf cov-analysis-linux64-2019.12.tar.gz
+    mv cov-analysis-linux64-2019.12 cov-analysis
+    cp license.dat ./cov-analysis/bin
+    rm -rf jre jre7 architecture-analysis sdk dynamic-analysis forcheck doc
+  condition: ne(variables.CACHE_RESTORED, 'true')
+  displayName: 'Install Coverity'
+
+# Cache Maven local repo to speed things up
 - task: Cache@2
   inputs:
     key: 'maven | "$(Agent.OS)" | **/pom.xml'
@@ -39,6 +60,7 @@ steps:
     path: $(MAVEN_CACHE_FOLDER)
   displayName: Cache Maven local repo
 
+# Coverity scan
 - task: synopsys-coverity@1
   inputs:
     coverityService: 'coverity-vm'
@@ -50,3 +72,4 @@ steps:
     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
     coverityRunType: 'buildanalyzecommit'
     allowUntrusted: true
+
