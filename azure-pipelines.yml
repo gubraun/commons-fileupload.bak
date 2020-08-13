@@ -61,8 +61,8 @@ steps:
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
     checkIssues: true
-    issueView: 'High Impact Outstanding'
-    issueStatus: 'failure'
+    issueView: 'Outstanding High Security Risks'
+    issueStatus: 'unstable'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
     allowUntrusted: true
