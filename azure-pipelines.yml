@@ -35,7 +35,7 @@ steps:
     cd $(Agent.BuildDirectory)
     cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
     cp $(mntPath)/license.dat .
-    tar -xzf cov-analysis-linux64-2020.06.tar.gz
+    tar -xvzf cov-analysis-linux64-2020.06.tar.gz
     mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
