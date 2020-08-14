@@ -11,6 +11,8 @@ variables:
   COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  COVERITY_AUTHKEY: '1DB7443FC1626ED938FAC2F9BAE0677D'
+  COVERITY_URL: 'https://coverity-vm.synopsysdemo.net:8443'
 
 trigger:
 - master
@@ -19,23 +21,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-# Mount share with Coverity analysis installer(s)
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: azure-connection
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      sh mount-coverity.sh
-      df -h
-  displayName: Azure CLI
-
 # Copy and install Coverity analysis package
 - script: |
     cd $(Agent.BuildDirectory)
-    cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
-    cp $(mntPath)/license.dat .
-    tar -xvzf cov-analysis-linux64-2020.06.tar.gz
+    curl --user admin:$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
+    curl --user admin:$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz | tar -xvzf -
     mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
