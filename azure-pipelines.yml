@@ -11,8 +11,6 @@ variables:
   COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-  COVERITY_AUTHKEY: '1DB7443FC1626ED938FAC2F9BAE0677D'
-  COVERITY_URL: 'https://coverity-vm.synopsysdemo.net:8443'
 
 trigger:
 - master
