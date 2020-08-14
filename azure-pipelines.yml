@@ -69,3 +69,4 @@ steps:
     coverityRunType: 'buildanalyzecommit'
     customCommandArgs: true
     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
+
