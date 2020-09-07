@@ -44,7 +44,7 @@ steps:
     coverityService: 'coverity-vm'
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
-    checkIssues: true
+    checkIssues: false
     issueView: 'Outstanding High Security Risks'
     issueStatus: 'unstable'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
