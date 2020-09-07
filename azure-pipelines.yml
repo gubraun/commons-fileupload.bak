@@ -18,8 +18,8 @@ steps:
 # Copy and install Coverity analysis package
 - script: |
     cd $(Agent.BuildDirectory)
-    curl -k -s -L --user admin:$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
-    curl -k -s -L --user admin:$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz | tar -xvzf -
+    curl -s -L --user admin:$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
+    curl -s -L --user admin:$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz | tar -xvzf -
     mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
@@ -44,7 +44,7 @@ steps:
     coverityService: 'coverity-vm'
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
-    checkIssues: false
+    checkIssues: true
     issueView: 'Outstanding High Security Risks'
     issueStatus: 'unstable'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
@@ -53,4 +53,3 @@ steps:
     coverityRunType: 'buildanalyzecommit'
     customCommandArgs: true
     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
-
