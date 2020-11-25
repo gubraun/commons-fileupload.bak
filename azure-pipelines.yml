@@ -1,7 +1,4 @@
 # Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 variables:
   COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
@@ -53,3 +50,13 @@ steps:
     coverityRunType: 'buildanalyzecommit'
     customCommandArgs: true
     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
+
+# Black Duck scan
+- task: SynopsysDetectTask@2
+  inputs:
+    Products: 'BD'
+    BlackDuckService: 'blackduck-testing'
+    DetectVersion: 'latest'
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
