@@ -52,11 +52,9 @@ steps:
     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
 
 # Black Duck scan
-- task: SynopsysDetectTask@2
-  inputs:
-    Products: 'BD'
-    BlackDuckService: 'blackduck-testing'
-    DetectVersion: 'latest'
+- script: bash <(curl -s -L https://detect.synopsys.com/detect.sh) --blackduck.url=$(BLACKDUCK_URL) --blackduck.api.token=$(BLACKDUCK_AUTHKEY) --detect.tools=DETECTOR --detect.policy.check.fail.on.severities=CRITICAL
+  displayName: 'Black Duck Detect'
+
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
