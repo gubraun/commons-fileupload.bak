@@ -39,7 +39,7 @@ steps:
 - task: synopsys-coverity@1
   inputs:
     #coverityService: 'coverity-vm'
-    coverityService: 'daimler-connect'
+    coverityService: 'coverity-daimler-prod'
     projectName: 'Azure Commons Fileupload'
     streamName: 'az-commons-fileupload'
     checkIssues: true
