@@ -15,8 +15,8 @@ steps:
 # Copy and install Coverity analysis package
 - script: |
     cd $(Agent.BuildDirectory)
-    curl -s -L --user admin:$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
-    curl -s -L --user admin:$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.12.tar.gz | tar -xvzf -
+    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
+    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.12.tar.gz | tar -xvzf -
     mv cov-analysis-linux64-2020.12 cov-analysis
     cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
