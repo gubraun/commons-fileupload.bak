@@ -3,3 +3,7 @@
 /.classpath
 /.project
 site-content/
+data-coverity/
+idir/
+emitdir/
+
