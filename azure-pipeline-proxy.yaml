@@ -1,0 +1,60 @@
+# Starter pipeline
+
+variables:
+  COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Copy and install Coverity analysis package
+- script: |
+    cd $(Agent.BuildDirectory)
+    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
+    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.12.tar.gz | tar -xvzf -
+    mv cov-analysis-linux64-2020.12 cov-analysis
+    cp license.dat ./cov-analysis/bin
+  displayName: 'Install Coverity'
+
+# Configure Coverity
+- script: $(COVERITY_TOOL_HOME)/bin/cov-configure --java
+  displayName: 'Configure Coverity'
+
+# Cache Maven local repo to speed things up
+- task: Cache@2
+  inputs:
+    key: 'maven | "$(Agent.OS)" | **/pom.xml'
+    restoreKeys: |
+      maven | "$(Agent.OS)"
+      maven
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo
+
+# Coverity scan
+- task: synopsys-coverity@1
+  inputs:
+    coverityService: 'coverity-daimler'
+    projectName: 'Azure Commons Fileupload'
+    streamName: 'az-commons-fileupload'
+    checkIssues: true
+    issueView: 'Outstanding High Security Risks'
+    issueStatus: 'unstable'
+    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
+    allowUntrusted: true
+    coverityRunType: 'buildanalyzecommit'
+    customCommandArgs: true
+    covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
+
+# Black Duck scan
+#- script: bash <(curl -s -L https://detect.synopsys.com/detect.sh) --blackduck.url=$(BLACKDUCK_URL) --blackduck.api.token=$(BLACKDUCK_AUTHKEY) --detect.tools=DETECTOR --detect.policy.check.fail.on.severities=CRITICAL
+#  displayName: 'Black Duck Detect'
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
