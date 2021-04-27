@@ -52,7 +52,7 @@ steps:
 #     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
 - task: synopsys-coverity@1
   inputs:
-    coverityService: 'coverity-daimler'
+    coverityService: 'coverity-daimler-integration'
     projectName: 'Synopsys'
     streamName: 'az-commons-fileupload'
     checkIssues: true
