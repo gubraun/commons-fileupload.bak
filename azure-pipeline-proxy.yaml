@@ -63,7 +63,7 @@ steps:
     customCoverityCommands: |
       cov-capture --dir $COV_DIR --project-dir $(Build.Repository.LocalPath)
       cov-analyze --dir $COV_DIR --webapp-security --strip-path $(Build.Repository.LocalPath)
-      cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM'
+      cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM
 
 # Black Duck scan
 #- script: bash <(curl -s -L https://detect.synopsys.com/detect.sh) --blackduck.url=$(BLACKDUCK_URL) --blackduck.api.token=$(BLACKDUCK_AUTHKEY) --detect.tools=DETECTOR --detect.policy.check.fail.on.severities=CRITICAL
