@@ -6,7 +6,7 @@ variables:
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
 trigger:
-- master
+- none
 
 pool:
   vmImage: 'ubuntu-latest'
