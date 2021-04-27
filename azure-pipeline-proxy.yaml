@@ -36,6 +36,20 @@ steps:
   displayName: Cache Maven local repo
 
 # Coverity scan
+# - task: synopsys-coverity@1
+#   inputs:
+#     coverityService: 'coverity-daimler'
+#     projectName: 'Synopsys'
+#     streamName: 'az-commons-fileupload'
+#     checkIssues: true
+#     issueView: 'Outstanding High Security Risks'
+#     issueStatus: 'unstable'
+#     coverityBuildDirectory: '
+#     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
+#     allowUntrusted: true
+#     coverityRunType: 'buildanalyzecommit'
+#     customCommandArgs: true
+#     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
 - task: synopsys-coverity@1
   inputs:
     coverityService: 'coverity-daimler'
@@ -45,11 +59,11 @@ steps:
     issueView: 'Outstanding High Security Risks'
     issueStatus: 'unstable'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
-    allowUntrusted: true
-    coverityRunType: 'buildanalyzecommit'
-    customCommandArgs: true
-    covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
+    coverityRunType: 'custom'
+    customCoverityCommands: |
+      cov-capture --dir $COV_DIR --project-dir $(Build.Repository.LocalPath)
+      cov-analyze --dir $COV_DIR --webapp-security --strip-path $(Build.Repository.LocalPath)
+      cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM'
 
 # Black Duck scan
 #- script: bash <(curl -s -L https://detect.synopsys.com/detect.sh) --blackduck.url=$(BLACKDUCK_URL) --blackduck.api.token=$(BLACKDUCK_AUTHKEY) --detect.tools=DETECTOR --detect.policy.check.fail.on.severities=CRITICAL
