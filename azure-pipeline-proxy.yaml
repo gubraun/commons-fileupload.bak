@@ -62,7 +62,7 @@ steps:
     coverityRunType: 'custom'
     customCoverityCommands: |
       cov-capture --dir $COV_DIR --project-dir $(Build.Repository.LocalPath)
-      cov-analyze --dir $COV_DIR --webapp-security --strip-path $(Build.Repository.LocalPath)
+      cov-analyze --dir $COV_DIR --strip-path $(Build.Repository.LocalPath) --all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode
       cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM
 
 # Black Duck scan
