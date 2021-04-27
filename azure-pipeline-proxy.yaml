@@ -63,20 +63,6 @@ steps:
     customCoverityCommands: |
       cov-capture --dir $COV_DIR --project-dir $(Build.Repository.LocalPath)
       cov-analyze --dir $COV_DIR --strip-path $(Build.Repository.LocalPath) --all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode
-- task: synopsys-coverity@1
-  inputs:
-    coverityService: 'coverity-daimler-integration'
-    projectName: 'Synopsys'
-    streamName: 'az-commons-fileupload'
-    checkIssues: true
-    issueView: 'Outstanding High Security Risks'
-    issueStatus: 'unstable'
-    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    coverityRunType: 'custom'
-    customCoverityCommands: |
-      cov-capture --dir $COV_DIR --project-dir $(Build.Repository.LocalPath)
-      cov-analyze --dir $COV_DIR --webapp-security --strip-path $(Build.Repository.LocalPath)
-      cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM
       cov-commit-defects --dir $COV_DIR --url $COV_URL --stream $COV_STREAM
 
 # Black Duck scan
