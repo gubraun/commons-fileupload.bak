@@ -16,8 +16,8 @@ steps:
 - script: |
     cd $(Agent.BuildDirectory)
     curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
-    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.12.tar.gz | tar -xvzf -
-    mv cov-analysis-linux64-2020.12 cov-analysis
+    curl -s -L --user $(COVERITY_USER):$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2021.06.tar.gz | tar -xvzf -
+    mv cov-analysis-linux64-2021.06 cov-analysis
     cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
 
@@ -45,11 +45,11 @@ steps:
     issueView: 'Outstanding High Security Risks'
     issueStatus: 'unstable'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+    coverityAnalysisType: 'incremental'
     buildCommand: 'mvn -Drat.skip=true -DskipTests=true package'
-    allowUntrusted: true
-    coverityRunType: 'buildanalyzecommit'
     customCommandArgs: true
     covAnalyzeArgs: '--all --webapp-security --webapp-security-aggressiveness-level high --enable-audit-mode'
+    allowUntrusted: true
 
 # Black Duck scan
 #- script: bash <(curl -s -L https://detect.synopsys.com/detect.sh) --blackduck.url=$(BLACKDUCK_URL) --blackduck.api.token=$(BLACKDUCK_AUTHKEY) --detect.tools=DETECTOR --detect.policy.check.fail.on.severities=CRITICAL
