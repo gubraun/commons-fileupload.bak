@@ -6,6 +6,9 @@ variables:
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 
 trigger:
+- none
+
+pr:
 - master
 
 pool:
